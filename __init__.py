@@ -64,6 +64,7 @@ def admin_login():
 @app.route('/test')
 def test():
     admins = Admins.query.all()
+    admins = [admin.username for admin in admins]
     return str(admins)
 
 # if __name__ == '__main__':
