@@ -20,5 +20,10 @@ def player_login():
 def admin_login():
     return render_template('admin_login.html')
 
+@app.route('/test')
+def test():
+    return POSTGRES_URL
+
+
 # if __name__ == '__main__':
 #     app.run(debug=True)
