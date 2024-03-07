@@ -18,25 +18,25 @@ app.config['dbname'] = variables['POSTGRES_DATABASE']
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{app.config['dbuser']}:{app.config['dbpass']}@{app.config['dbhost']}/{app.config['dbname']}"
 db = SQLAlchemy(app)
 
-class Admin(db.Model):
+class Admins(db.Model):
     admin_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
-class Game(db.Model):
+class Games(db.Model):
     game_id = db.Column(db.Integer, primary_key=True)
     game_name = db.Column(db.String(100), nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.admin_id'), nullable=False)
     admin = db.relationship('Admin', backref=db.backref('games', lazy=True))
 
-class Player(db.Model):
+class Players(db.Model):
     player_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('game.game_id'), nullable=False)
     game = db.relationship('Game', backref=db.backref('players', lazy=True))
 
-class Pairing(db.Model):
+class Pairings(db.Model):
     pairing_id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey('game.game_id'), nullable=False)
     game = db.relationship('Game', backref=db.backref('pairings', lazy=True))
@@ -62,7 +62,7 @@ def admin_login():
 
 @app.route('/test')
 def test():
-    admins = Admin.query.all()
+    admins = Admins.query.all()
     return admins
 
 # if __name__ == '__main__':
