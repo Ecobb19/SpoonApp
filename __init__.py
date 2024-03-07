@@ -1,5 +1,9 @@
 from flask import Flask
 from flask import render_template, request, redirect, url_for
+import os
+# Load environment variables from .env file
+
+variables = os.environ
 
 
 app = Flask(__name__)
@@ -22,8 +26,8 @@ def admin_login():
 
 @app.route('/test')
 def test():
-    return POSTGRES_URL
-
+    return variables
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
+
