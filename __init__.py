@@ -9,10 +9,10 @@ variables = dict(os.environ)
 
 
 app = Flask(__name__)
-app.congig['dbhost'] = variables['POSTGRES_HOST']
-app.congig['dbuser'] = variables['POSTGRES_USER']
-app.congig['dbpass'] = variables['POSTGRES_PASSWORD']
-app.congig['dbname'] = variables['POSTGRES_DATABASE']
+app.config['dbhost'] = variables['POSTGRES_HOST']
+app.config['dbuser'] = variables['POSTGRES_USER']
+app.config['dbpass'] = variables['POSTGRES_PASSWORD']
+app.config['dbname'] = variables['POSTGRES_DATABASE']
 
 # Set up PostgreSQL connection
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{app.config['dbuser']}:{app.config['dbpass']}@{app.config['dbhost']}/{app.config['dbname']}"
