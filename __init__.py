@@ -8,5 +8,17 @@ app = Flask(__name__)
 def hello():
     return render_template('home.html')
 
+@app.route('/how-to-play')
+def about():
+    return render_template('instructions.html')
+
+@app.route('/player-login')
+def player_login():
+    return render_template('player_login.html')
+
+@app.route('/admin-login')
+def admin_login():
+    return render_template('admin_login.html')
+
 # if __name__ == '__main__':
 #     app.run(debug=True)
