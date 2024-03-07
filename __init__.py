@@ -64,7 +64,7 @@ def admin_login():
 @app.route('/test')
 def test():
     admins = Admins.query.all()
-    return admins
+    return str(admins)
 
 # if __name__ == '__main__':
 #     app.run(debug=True)
@@ -158,3 +158,29 @@ def test():
 # there are multiple foreign key paths linking the tables.  
 # Specify the 'foreign_keys' argument, providing a list of those columns
 # which should be counted as containing a foreign key reference to the parent table.
+
+
+
+# [ERROR]	2024-03-07T19:37:02.536Z	9da8aab5-13d5-4259-abb2-e2d81baf013f	Exception on /test [GET]
+# Traceback (most recent call last):
+#   File "/var/task/flask/app.py", line 1463, in wsgi_app
+#     response = self.full_dispatch_request()
+#   File "/var/task/flask/app.py", line 873, in full_dispatch_request
+#     return self.finalize_request(rv)
+#   File "/var/task/flask/app.py", line 892, in finalize_request
+#     response = self.make_response(rv)
+#   File "/var/task/flask/app.py", line 1183, in make_response
+#     rv = self.json.response(rv)
+#   File "/var/task/flask/json/provider.py", line 214, in response
+#     f"{self.dumps(obj, **dump_args)}\n", mimetype=self.mimetype
+#   File "/var/task/flask/json/provider.py", line 179, in dumps
+#     return json.dumps(obj, **kwargs)
+#   File "/var/lang/lib/python3.9/json/__init__.py", line 234, in dumps
+#     return cls(
+#   File "/var/lang/lib/python3.9/json/encoder.py", line 199, in encode
+#     chunks = self.iterencode(o, _one_shot=True)
+#   File "/var/lang/lib/python3.9/json/encoder.py", line 257, in iterencode
+#     return _iterencode(o, 0)
+#   File "/var/task/flask/json/provider.py", line 121, in _default
+#     raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+# TypeError: Object of type Admins is not JSON serializable
