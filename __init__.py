@@ -26,23 +26,24 @@ class Admins(db.Model):
 class Games(db.Model):
     game_id = db.Column(db.Integer, primary_key=True)
     game_name = db.Column(db.String(100), nullable=False)
-    admin_id = db.Column(db.Integer, db.ForeignKey('admin.admin_id'), nullable=False)
-    admin = db.relationship('Admin', backref=db.backref('games', lazy=True))
+    admin_id = db.Column(db.Integer, db.ForeignKey('admins.admin_id'), nullable=False)
+    admin = db.relationship('Admins', backref=db.backref('games', lazy=True))
 
 class Players(db.Model):
     player_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.game_id'), nullable=False)
-    game = db.relationship('Game', backref=db.backref('players', lazy=True))
-
+    game_id = db.Column(db.Integer, db.ForeignKey('games.game_id'), nullable=False)
+    game = db.relationship('Games', backref=db.backref('players', lazy=True))
 class Pairings(db.Model):
     pairing_id = db.Column(db.Integer, primary_key=True)
-    game_id = db.Column(db.Integer, db.ForeignKey('game.game_id'), nullable=False)
-    game = db.relationship('Game', backref=db.backref('pairings', lazy=True))
-    assassin = db.Column(db.Integer, db.ForeignKey('player.player_id'), nullable=False)
-    target = db.Column(db.Integer, db.ForeignKey('player.player_id'), nullable=False)
-
+    game_id = db.Column(db.Integer, db.ForeignKey('games.game_id'), nullable=False)
+    assassin = db.Column(db.Integer, db.ForeignKey('players.player_id'), nullable=False)
+    target = db.Column(db.Integer, db.ForeignKey('players.player_id'), nullable=False)
+    game = db.relationship('Games', backref=db.backref('pairings', lazy=True))
+    assassin_ = db.relationship('Players', backref=db.backref('pairings', lazy=True))
+    target_ = db.relationship('Players', backref=db.backref('pairings', lazy=True))
+    
 
 @app.route('/')
 def hello():
@@ -85,4 +86,13 @@ def test():
 # handler__python': No module named 'psycopg2'
 # # Traceback (most recent call last):
 
+
+
+# sqlalchemy.exc.InvalidRequestError: One or more mappers failed to 
+# initialize - can't proceed with initialization of other mappers. 
+# Triggering mapper: 'Mapper[Games(games)]'. Original exception was: 
+# When initializing mapper Mapper[Games(games)], expression 'Admin' 
+# failed to locate a name ('Admin'). If this is a class name, consider 
+# adding this relationship() to the <class '__init__.Games'> class 
+# after both dependent classes have been defined.
 
