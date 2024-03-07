@@ -2,9 +2,17 @@ from flask import Flask
 from flask import render_template, request, redirect, url_for
 import os
 from flask_sqlalchemy import SQLAlchemy
+import os
+import json
 # Load environment variables from .env file
 
 variables = dict(os.environ)
+
+if os.path.isfile('config.json'):
+    variables = json.load(open('config.json'))
+else:
+    variables = dict(os.environ)
+
 
 
 
@@ -63,125 +71,9 @@ def admin_login():
 
 @app.route('/test')
 def test():
-    admins = Admins.query.all()
+    admins = Admins.query.filter_by(username='username').all()
     admins = [admin.username for admin in admins]
     return str(admins)
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-
-# # LAMBDA_WARNING: Unhandled exception. The most likely cause is an 
-# issue in the function code. However, in rare cases, a Lambda runtime
-# update can cause unexpected function behavior. For functions using 
-# managed runtimes, runtime updates can be triggered by a function 
-# change, or can be applied automatically. To determine if the runtime 
-# has been updated, check the runtime version in the INIT_START log 
-# entry. If this error correlates with a change in the runtime version, 
-# you may be able to mitigate this error by temporarily rolling back to
-# the previous runtime version. For more information, 
-# see https://docs.aws.amazon.com/lambda/latest/dg/runtimes-update.html
-
-# # [ERROR] Runtime.ImportModuleError: Unable to import module 'vc__
-# handler__python': No module named 'psycopg2'
-# # Traceback (most recent call last):
-
-
-
-# sqlalchemy.exc.InvalidRequestError: One or more mappers failed to 
-# initialize - can't proceed with initialization of other mappers. 
-# Triggering mapper: 'Mapper[Games(games)]'. Original exception was: 
-# When initializing mapper Mapper[Games(games)], expression 'Admin' 
-# failed to locate a name ('Admin'). If this is a class name, consider 
-# adding this relationship() to the <class '__init__.Games'> class 
-# after both dependent classes have been defined.
-
-# [ERROR]	2024-03-07T19:30:11.155Z	7d5dc084-9805-47d2-85e1-697658fa66b3	Exception on /test [GET]
-# Traceback (most recent call last):
-#   File "/var/task/sqlalchemy/orm/relationships.py", line 2425, in _determine_joins
-#     self.primaryjoin = join_condition(
-#   File "/var/task/sqlalchemy/sql/util.py", line 123, in join_condition
-#     return Join._join_condition(
-#   File "/var/task/sqlalchemy/sql/selectable.py", line 1343, in _join_condition
-#     cls._joincond_trim_constraints(
-#   File "/var/task/sqlalchemy/sql/selectable.py", line 1488, in _joincond_trim_constraints
-#     raise exc.AmbiguousForeignKeysError(
-# sqlalchemy.exc.AmbiguousForeignKeysError: Can't determine join between 'pairings' and 'players'; tables have more than one foreign key constraint relationship between them. Please specify the 'onclause' of this join explicitly.
-
-# The above exception was the direct cause of the following exception:
-
-# Traceback (most recent call last):
-#   File "/var/task/flask/app.py", line 1463, in wsgi_app
-#     response = self.full_dispatch_request()
-#   File "/var/task/flask/app.py", line 872, in full_dispatch_request
-#     rv = self.handle_user_exception(e)
-#   File "/var/task/flask/app.py", line 870, in full_dispatch_request
-#     rv = self.dispatch_request()
-#   File "/var/task/flask/app.py", line 855, in dispatch_request
-#     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-#   File "./__init__.py", line 66, in test
-#     admins = Admins.query.all()
-#   File "/var/task/flask_sqlalchemy/model.py", line 22, in __get__
-#     return cls.query_class(
-#   File "/var/task/sqlalchemy/orm/query.py", line 275, in __init__
-#     self._set_entities(entities)
-#   File "/var/task/sqlalchemy/orm/query.py", line 287, in _set_entities
-#     self._raw_columns = [
-#   File "/var/task/sqlalchemy/orm/query.py", line 288, in <listcomp>
-#     coercions.expect(
-#   File "/var/task/sqlalchemy/sql/coercions.py", line 389, in expect
-#     insp._post_inspect
-#   File "/var/task/sqlalchemy/util/langhelpers.py", line 1252, in __get__
-#     obj.__dict__[self.__name__] = result = self.fget(obj)
-#   File "/var/task/sqlalchemy/orm/mapper.py", line 2711, in _post_inspect
-#     self._check_configure()
-#   File "/var/task/sqlalchemy/orm/mapper.py", line 2388, in _check_configure
-#     _configure_registries({self.registry}, cascade=True)
-#   File "/var/task/sqlalchemy/orm/mapper.py", line 4203, in _configure_registries
-#     _do_configure_registries(registries, cascade)
-#   File "/var/task/sqlalchemy/orm/mapper.py", line 4244, in _do_configure_registries
-#     mapper._post_configure_properties()
-#   File "/var/task/sqlalchemy/orm/mapper.py", line 2405, in _post_configure_properties
-#     prop.init()
-#   File "/var/task/sqlalchemy/orm/interfaces.py", line 579, in init
-#     self.do_init()
-#   File "/var/task/sqlalchemy/orm/relationships.py", line 1644, in do_init
-#     self._setup_join_conditions()
-#   File "/var/task/sqlalchemy/orm/relationships.py", line 1886, in _setup_join_conditions
-#     self._join_condition = jc = JoinCondition(
-#   File "/var/task/sqlalchemy/orm/relationships.py", line 2312, in __init__
-#     self._determine_joins()
-#   File "/var/task/sqlalchemy/orm/relationships.py", line 2469, in _determine_joins
-#     raise sa_exc.AmbiguousForeignKeysError(
-# sqlalchemy.exc.AmbiguousForeignKeysError: Could not determine join condition 
-# between parent/child tables on relationship Pairings.assassin_ - 
-# there are multiple foreign key paths linking the tables.  
-# Specify the 'foreign_keys' argument, providing a list of those columns
-# which should be counted as containing a foreign key reference to the parent table.
-
-
-
-# [ERROR]	2024-03-07T19:37:02.536Z	9da8aab5-13d5-4259-abb2-e2d81baf013f	Exception on /test [GET]
-# Traceback (most recent call last):
-#   File "/var/task/flask/app.py", line 1463, in wsgi_app
-#     response = self.full_dispatch_request()
-#   File "/var/task/flask/app.py", line 873, in full_dispatch_request
-#     return self.finalize_request(rv)
-#   File "/var/task/flask/app.py", line 892, in finalize_request
-#     response = self.make_response(rv)
-#   File "/var/task/flask/app.py", line 1183, in make_response
-#     rv = self.json.response(rv)
-#   File "/var/task/flask/json/provider.py", line 214, in response
-#     f"{self.dumps(obj, **dump_args)}\n", mimetype=self.mimetype
-#   File "/var/task/flask/json/provider.py", line 179, in dumps
-#     return json.dumps(obj, **kwargs)
-#   File "/var/lang/lib/python3.9/json/__init__.py", line 234, in dumps
-#     return cls(
-#   File "/var/lang/lib/python3.9/json/encoder.py", line 199, in encode
-#     chunks = self.iterencode(o, _one_shot=True)
-#   File "/var/lang/lib/python3.9/json/encoder.py", line 257, in iterencode
-#     return _iterencode(o, 0)
-#   File "/var/task/flask/json/provider.py", line 121, in _default
-#     raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
-# TypeError: Object of type Admins is not JSON serializable
+if __name__ == '__main__':
+    app.run(debug=True)
