@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for
 import os
 # Load environment variables from .env file
 
-variables = os.environ
+variables = dict(os.environ)
 
 
 app = Flask(__name__)
